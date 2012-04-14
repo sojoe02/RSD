@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/">
+        <file>packmlressource/aborted.png</file>
+        <file>packmlressource/aborting.png</file>
+        <file>packmlressource/clearing.png</file>
+        <file>packmlressource/complete.png</file>
+        <file>packmlressource/completing.png</file>
+        <file>packmlressource/held.png</file>
+        <file>packmlressource/holding.png</file>
+        <file>packmlressource/idle.png</file>
+        <file>packmlressource/resetting.png</file>
+        <file>packmlressource/stopped.png</file>
+        <file>packmlressource/stopping.png</file>
+        <file>packmlressource/suspended.png</file>
+        <file>packmlressource/suspending.png</file>
+        <file>packmlressource/unholding.png</file>
+        <file>packmlressource/unsuspending.png</file>
+        <file>packmlressource/clear.png</file>
+        <file>packmlressource/ready.png</file>
+        <file>packmlressource/init.png</file>
+        <file>packmlressource/execute.png</file>
+        <file>packmlressource/starting.png</file>
+    </qresource>
+</RCC>
