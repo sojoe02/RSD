@@ -1,7 +1,8 @@
 #include "rsdmainwindow.h"
 #include "packmlw.h"
 #include "restwidget.h"
-#include "ui_restw.h"
+#include "oeewidget.h"
+
 
 
 RSDMainWindow::RSDMainWindow(QWidget *parent) :
@@ -13,10 +14,14 @@ RSDMainWindow::RSDMainWindow(QWidget *parent) :
     QWidget *central = new QWidget();
     PackMLw *packml = new PackMLw();
     RestWidget *rwidget = new RestWidget();
+    OEEWidget *oeewidget = new OEEWidget();
+
 
     layout->addWidget(packml);
+    layout->addWidget(oeewidget);
     layout->addWidget(button1);
     layout->addWidget(rwidget);
+
 
     central->setLayout(layout);
 

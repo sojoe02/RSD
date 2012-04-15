@@ -5,12 +5,14 @@ CONFIG += qt
 SOURCES += main.cpp \
     packmlw.cpp \
     rsdmainwindow.cpp \
-    restwidget.cpp
+    restwidget.cpp \
+    oeewidget.cpp
 
 HEADERS += \
     packmlw.h \
     rsdmainwindow.h \
-    restwidget.h
+    restwidget.h \
+    oeewidget.h
 
 OTHER_FILES +=
 
