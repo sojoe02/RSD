@@ -20,4 +20,5 @@ RESOURCES += \
     packml-icons.qrc
 
 FORMS +=
+QT += network xml
 

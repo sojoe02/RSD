@@ -28,4 +28,8 @@ void OEEWidget::inputErr(){
     if(ok){
         label->setText(tr("errors since last: %1 ").arg(err));
     }
+
+    inputdialog->deleteLater();
+
+
 }

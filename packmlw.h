@@ -5,13 +5,13 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QApplication>
-
+#include "restwidget.h"
 
 class PackMLw : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PackMLw(QWidget *parent = 0);
+    explicit PackMLw(QWidget *parent = 0, RestWidget *rest=0);
     
 signals:
     void sc();
@@ -86,6 +86,8 @@ private:
     QLabel *label;
     QLabel *statusLabel;
     QLabel *imageLabel;
+
+    RestWidget *restwidget;
 
     int delay;
 };

@@ -1,12 +1,13 @@
 #include "packmlw.h"
 #include "iostream"
+#include "restwidget.h"
 
 #include <QtGui>
 
 
 
-PackMLw::PackMLw(QWidget *parent) :
-    QWidget(parent)
+PackMLw::PackMLw(QWidget *parent, RestWidget *rest) :
+    QWidget(parent), restwidget(rest)
 {
     this->setWindowTitle(QApplication::translate("PackML", "Pack ML"));
 
@@ -82,7 +83,7 @@ PackMLw::PackMLw(QWidget *parent) :
     this->setMaximumHeight(350);
     this->setMaximumWidth(550);
 
-
+    QObject::connect(this, SIGNAL(sc()), restwidget, SLOT(getNewOrder()));
 }
 
 void PackMLw::definemachine(){
@@ -193,9 +194,9 @@ void PackMLw::definemachine(){
 }
 
 //THE SIGNAL FUNCTIONS:
-
-
-
+void PackMLw::timedSC(){
+    emit sc();
+}
 
 //THE SLOT FUNCTIONS:
 void PackMLw::stateAborting(){
@@ -289,9 +290,6 @@ void PackMLw::stateUnholding(){
     QTimer::singleShot(delay,this,SLOT(timedSC()));
 }
 
-void PackMLw::timedSC(){
-    emit sc();
-}
 
 
 
