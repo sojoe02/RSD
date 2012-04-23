@@ -1,6 +1,7 @@
 #ifndef RESTWIDGET_H
 #define RESTWIDGET_H
 
+#include <vector>
 #include <QtGui>
 #include <QDebug>
 #include <QThread>
@@ -14,7 +15,7 @@
 #include <QtNetwork/QNetworkProxy>
 #include <QtXml/QDomDocument>
 #include <QLabel>
-#include <vector>
+
 
 
 class RestWidget : public QWidget
@@ -25,10 +26,13 @@ public:
     
 signals:
     void sendOrder(std::vector<int> *order); //will be used by getNewOrder slot!
+    void connectionError();
     
 public slots:
-    void getNewOrder();
+    void getNewOrder();    
     void deleteOrder(int value);
+
+    void requestFinished(QNetworkReply *reply);
 
 
 private:
@@ -45,7 +49,8 @@ private:
     QListWidget *xmloutput;
 
     QNetworkAccessManager *netManager;
-    QNetworkRequest *request;
+
+    //QNetworkRequest *request;
 
     std::vector<int> *currentOrder;
 };

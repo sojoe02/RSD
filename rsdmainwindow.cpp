@@ -9,7 +9,7 @@ RSDMainWindow::RSDMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
     //DEFINE WIDGETS:
-    QPushButton *button1 = new QPushButton(QApplication::translate("rsdmainwindow", "This belongs to main window"));
+    //QPushButton *button1 = new QPushButton(QApplication::translate("rsdmainwindow", "This belongs to main window"));
     QGridLayout *layout = new QGridLayout();
     QWidget *central = new QWidget();
 
@@ -20,7 +20,7 @@ RSDMainWindow::RSDMainWindow(QWidget *parent) :
 
     layout->addWidget(packml,0,0);
     layout->addWidget(oeewidget,0,1);
-    //layout->addWidget(button1);
+
     layout->addWidget(rwidget,1,0,1,2);
 
 

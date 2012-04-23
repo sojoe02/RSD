@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 
 
     RSDMainWindow w;
-    w.resize(800,500);
+    w.resize(800,550);
     w.show();
     //button.show();
 

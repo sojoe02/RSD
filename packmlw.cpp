@@ -83,7 +83,7 @@ PackMLw::PackMLw(QWidget *parent, RestWidget *rest) :
     this->setMaximumHeight(350);
     this->setMaximumWidth(550);
 
-    QObject::connect(this, SIGNAL(sc()), restwidget, SLOT(getNewOrder()));
+    //QObject::connect(this, SIGNAL(sc()), restwidget, SLOT(getNewOrder()));
 }
 
 void PackMLw::definemachine(){
@@ -288,6 +288,11 @@ void PackMLw::stateHeld(){
 void PackMLw::stateUnholding(){
     imageLabel->setPixmap(QPixmap(":/packmlressource/unholding.png"));
     QTimer::singleShot(delay,this,SLOT(timedSC()));
+}
+
+void PackMLw::handlingOrder(){
+    //this will handle all the order logic, and emit a signal whenever it's done handling an order.
+    //TODO!
 }
 
 

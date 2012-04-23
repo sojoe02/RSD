@@ -15,6 +15,7 @@ public:
     
 signals:
     void sc();
+    void orderDone();
 
     
 public slots:
@@ -37,6 +38,8 @@ public slots:
  void stateHolding();
  void stateHeld();
  void stateUnholding();
+
+ void handlingOrder();
 
  void timedSC();
 
