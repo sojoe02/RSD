@@ -21,6 +21,7 @@ public slots:
 private:
     QPushButton *button;
     QLabel *label;
+    QLabel *OEEoutput;
     QVBoxLayout *layout;
     
 };

@@ -30,12 +30,19 @@ signals:
     
 public slots:
     void getNewOrder();    
+    void testConnection();
     void deleteOrder(int value);
 
-    void requestFinished(QNetworkReply *reply);
+    void testRequest(QNetworkReply *reply);
+    void getRequest(QNetworkReply *reply);
+
+
 
 
 private:
+
+
+
     QString server_url;
     QString user;
     QString password; //not sure if needed!
@@ -46,9 +53,15 @@ private:
     QLabel *statusLabel;
     QLabel *userLabel;
 
-    QListWidget *xmloutput;
+     QListWidget *xmloutput;
+     QTextEdit *dataOutput;
 
-    QNetworkAccessManager *netManager;
+     QNetworkAccessManager *netManager;
+
+     QNetworkAccessManager *netManager2;
+
+
+
 
     //QNetworkRequest *request;
 

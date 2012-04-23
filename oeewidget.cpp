@@ -9,12 +9,21 @@ OEEWidget::OEEWidget(QWidget *parent) :
 
     connect(button,SIGNAL(pressed()),this,SLOT(inputErr()));
 
+    //set up a template for the OEE output:
+    QString fonttemplate = tr("<font color='%1' size='%2'>%3</font>");
+
+    OEEoutput = new QLabel(this);
+
+
     label = new QLabel(this);
     layout = new QVBoxLayout(this);
     layout->addWidget(button);
     layout->addWidget(label);
+    layout->addWidget(OEEoutput);
     this->setMaximumSize(150,200);
     this->setLayout(layout);
+
+    OEEoutput->setText( fonttemplate.arg( "green", "12","OEE : ##" ) );
 
 
 }
