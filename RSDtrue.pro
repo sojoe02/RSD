@@ -3,13 +3,19 @@ CONFIG += console
 CONFIG += qt
 INCLUDEPATH += /usr/include/opencv2
 
+include(qextserialport-1.2beta1/src/qextserialport.pri)
+
+
 SOURCES += main.cpp \
     packmlw.cpp \
     rsdmainwindow.cpp \
     restwidget.cpp \
     oeewidget.cpp \
     visionwidget.cpp \
-    vision/VisionSystem.cpp
+    vision/VisionSystem.cpp \
+    serial/serialcomm.cpp\
+    #serial/serial_fct.cpp
+
 
 HEADERS += \
     packmlw.h \
@@ -17,7 +23,12 @@ HEADERS += \
     restwidget.h \
     oeewidget.h \
     visionwidget.h \
-    vision/VisionSystem.h
+    vision/VisionSystem.h \
+    serial/serialcomm.h \
+    #serial/serial_functions.h
+
+
+
 
 OTHER_FILES +=
 
