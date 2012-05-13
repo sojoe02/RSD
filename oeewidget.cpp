@@ -5,7 +5,8 @@ OEEWidget::OEEWidget(QWidget *parent) :
     QWidget(parent)
 {
     button = new QPushButton("Register Errors", this);
-    button->setMaximumWidth(80);
+    button->setBaseSize(130,30);
+    //button->setMaximumWidth(80);
 
     connect(button,SIGNAL(pressed()),this,SLOT(inputErr()));
 

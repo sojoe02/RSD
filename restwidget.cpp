@@ -11,7 +11,8 @@
 RestWidget::RestWidget(QWidget *parent) :
     QWidget(parent)
 {
-    server_url = "http://httpbin.org/get";
+    //server_url = "http://httpbin.org/get";
+    server_url = "http://192.168.0.100/orders/";
     user = "team1";
     status = "idle";
     password = "nothing";
@@ -29,6 +30,7 @@ RestWidget::RestWidget(QWidget *parent) :
 
     //test area:
     QPushButton *TestButton = new QPushButton(QApplication::translate("PackML","Test Connection"));
+
     QObject::connect(TestButton, SIGNAL(pressed()),this,SLOT(testConnection()));
 
 
@@ -125,8 +127,6 @@ void RestWidget::deleteOrder(int value){
 
 //Methods for testing the server connection and reply, a get request is made with a header, and the servers answer is then
 //printet to the outputscreen of the rest widget.
-
-
 void RestWidget::testConnection(){
 
 
@@ -138,10 +138,12 @@ void RestWidget::testConnection(){
                      );
     request.setRawHeader("Accept", "application/xml");
     request.setRawHeader("Content-Type", "application/xml");
+    request.setRawHeader("SetContentLength","www");
 
     request.setUrl(QUrl(server_url));
 
     QNetworkReply *reply = netManager2->get(request);
+
 
 }
 
@@ -156,21 +158,15 @@ void RestWidget::testRequest(QNetworkReply *reply){
 
         dataOutput->setText(data);
 
-
-
         doc.setContent(data);
         //xmloutput->addItem(doc.);
-        QDomNodeList nodes = doc.elementsByTagName("*");
+        QDomNodeList orderNodes = doc.elementsByTagName("order");
 
 
-
-        if(nodes.size()>0){
-            xmloutput->addItem(nodes.at(0).toElement().text());
+        for(int i = 0; i < orderNodes.size(); i++){
+                xmloutput->addItem(orderNodes.at(i).toElement().text());
         }
-    }
-
-
-     //testManager->deleteLater();
+    }    
 }
 
 

@@ -1,18 +1,23 @@
 TEMPLATE = app
 CONFIG += console
 CONFIG += qt
+INCLUDEPATH += /usr/include/opencv2
 
 SOURCES += main.cpp \
     packmlw.cpp \
     rsdmainwindow.cpp \
     restwidget.cpp \
-    oeewidget.cpp
+    oeewidget.cpp \
+    visionwidget.cpp \
+    vision/VisionSystem.cpp
 
 HEADERS += \
     packmlw.h \
     rsdmainwindow.h \
     restwidget.h \
-    oeewidget.h
+    oeewidget.h \
+    visionwidget.h \
+    vision/VisionSystem.h
 
 OTHER_FILES +=
 
@@ -21,4 +26,7 @@ RESOURCES += \
 
 FORMS +=
 QT += network xml
+
+CONFIG += link_pkgconfig
+PKGCONFIG += opencv
 

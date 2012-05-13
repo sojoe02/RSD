@@ -45,6 +45,7 @@ PackMLw::PackMLw(QWidget *parent, RestWidget *rest) :
 
     //make a button widget with vertical layout:
     QVBoxLayout *buttonlayout = new QVBoxLayout();
+
     buttonlayout->addWidget(holdButton);
     buttonlayout->addWidget(suspendButton);
     buttonlayout->addWidget(unholdButton);
