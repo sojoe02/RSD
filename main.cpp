@@ -16,30 +16,6 @@ int main(int argc, char *argv[])
     RSDMainWindow w;
     w.resize(800,550);
     w.show();
-
-
-
-
-       VisionSystem vs;
-
-
-
-        //cv::namedWindow("output", CV_WINDOW_NORMAL);
-
-        //vs.findBricks();
-
-
-        //for (int i = 0; i < vs.bricks.size(); i++) {
-        //    std::cout << vs.colors[vs.bricks[i].color] << " found at: [" << vs.bricks[i].x << "," << vs.bricks[i].y << "] - : " << vs.bricks[i].orientation << std::endl;
-        //}
-
-
-
-        //cv::imshow("output", vs.outputImage);
-
-
-
-        //cv::waitKey(0);
     return a.exec();
 
     }

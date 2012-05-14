@@ -184,9 +184,9 @@ bool VisionSystem::findBricks() {
        }
        // Release the capture device housekeeping
        cvReleaseCapture( &capture );
-       cvDestroyWindow( "Org" );
-       cvDestroyWindow( "Yellow" );
-       cvDestroyWindow( "Blue" );
-       cvDestroyWindow( "Red" );
+       //cvDestroyWindow( "Org" );
+       //cvDestroyWindow( "Yellow" );
+       //cvDestroyWindow( "Blue" );
+       //cvDestroyWindow( "Red" );
        return 0;
      }

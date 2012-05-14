@@ -43,6 +43,28 @@ void DebugWidget:: testRobot()
 
 void DebugWidget:: testVision()
 {
+    feedback->addItem("Performing vision test");
+    feedback->addItem("Printing found brick locations:");
+    VisionSystem vs;
+
+    //cv::namedWindow("output", CV_WINDOW_NORMAL);
+
+    vs.findBricks();
+
+    for (int i = 0; i < vs.bricks.size(); i++)
+    {
+        QString thing = QString::number(vs.bricks[i].color)
+                + " found at: [" + QString::number(vs.bricks[i].x)
+                + "," + QString::number(vs.bricks[i].y)
+                +"] - : " + QString::number(vs.bricks[i].orientation);
+
+        feedback->addItem(thing);
+    }
+
+    feedback->addItem("Vision test done");
+
+    //cv::imshow("output", vs.outputImage);
+    //cv::waitKey(0);
 
 }
 
