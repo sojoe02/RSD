@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     vision/VisionSystem.cpp \
     serial/serialcomm.cpp\
     plccomms/rsd_server.cpp \
-    plccomms/serverthread.cpp
+    plccomms/serverthread.cpp \
+    debugwidget.cpp
     #serial/serial_fct.cpp
 
 
@@ -28,7 +29,8 @@ HEADERS += \
     vision/VisionSystem.h \
     serial/serialcomm.h \
     plccomms/rsd_server.h \
-    plccomms/serverthread.h
+    plccomms/serverthread.h \
+    debugwidget.h
     #serial/serial_functions.h
 
 

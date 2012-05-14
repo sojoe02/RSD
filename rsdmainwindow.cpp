@@ -2,6 +2,7 @@
 #include "packmlw.h"
 #include "restwidget.h"
 #include "oeewidget.h"
+#include "debugwidget.h"
 
 
 
@@ -21,6 +22,7 @@ RSDMainWindow::RSDMainWindow(QWidget *parent) :
     tabWidget->addTab(rwidget, tr("Rest"));
     tabWidget->addTab(new PackMLw(this,rwidget), tr("PackML"));
     tabWidget->addTab(new OEEWidget(), tr("OEE"));
+    tabWidget->addTab(new DebugWidget(),tr("Debug"));
 
     //    RestWidget *rwidget = new RestWidget();
     //    PackMLw *packml = new PackMLw(this,rwidget);

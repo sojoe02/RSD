@@ -36,12 +36,7 @@ public slots:
     void testRequest(QNetworkReply *reply);
     void getRequest(QNetworkReply *reply);
 
-
-
-
 private:
-
-
 
     QString server_url;
     QString user;

@@ -16,17 +16,17 @@ int main(int argc, char *argv[])
     RSDMainWindow w;
     w.resize(800,550);
     w.show();
-    //button.show();
 
-    //test opencv shit:
+
+
 
        VisionSystem vs;
 
 
 
-        cv::namedWindow("output", CV_WINDOW_NORMAL);
+        //cv::namedWindow("output", CV_WINDOW_NORMAL);
 
-        vs.findBricks();
+        //vs.findBricks();
 
 
         //for (int i = 0; i < vs.bricks.size(); i++) {
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 
 
 
-        cv::imshow("output", vs.outputImage);
+        //cv::imshow("output", vs.outputImage);
 
 
 
