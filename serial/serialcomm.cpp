@@ -2,10 +2,10 @@
 #include "qextserialport.h"
 #include "QtGui"
 
-SerialComm::SerialComm(QWidget *parent) :
-    QWidget(parent)
+SerialComm::SerialComm(QWidget *parent, QString device) :
+    QWidget(parent), device(device)
 {
-    port = new QextSerialPort("COM1");
+    port = new QextSerialPort(device);
 
 
 }

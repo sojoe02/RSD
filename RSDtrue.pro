@@ -14,6 +14,7 @@ SOURCES += main.cpp \
     visionwidget.cpp \
     vision/VisionSystem.cpp \
     serial/serialcomm.cpp\
+    plccomms/rsd_server.cpp
     #serial/serial_fct.cpp
 
 
@@ -25,6 +26,7 @@ HEADERS += \
     visionwidget.h \
     vision/VisionSystem.h \
     serial/serialcomm.h \
+    plccomms/rsd_server.h
     #serial/serial_functions.h
 
 
