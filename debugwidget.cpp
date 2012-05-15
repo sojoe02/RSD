@@ -38,7 +38,26 @@ void DebugWidget:: testPLC()
 
 void DebugWidget:: testRobot()
 {
+    SerialComm *serial = new SerialComm();
+    feedback->addItem("Performing serial to robot test");
+    feedback->addItem("Waiting for parameters");
 
+    bool ok;
+
+    QString text = QInputDialog::getText(this,tr("input coordinates"),tr("placeholder"),QLineEdit::Normal,tr("090909"), &ok);
+
+
+    if (ok && !text.isEmpty()){
+        feedback->addItem("Sending:\t" + text);
+        int status = serial->sendString(text);
+        if(status == -1){
+            feedback->addItem("Serial port cannot be opened");
+        }
+        if(status == 1){
+            feedback->addItem("Data send to serial port successfully");
+        }
+    }
+    serial->deleteLater();
 }
 
 void DebugWidget:: testVision()
@@ -62,10 +81,8 @@ void DebugWidget:: testVision()
     }
 
     feedback->addItem("Vision test done");
-
     //cv::imshow("output", vs.outputImage);
     //cv::waitKey(0);
-
 }
 
 void DebugWidget:: testOrderSystem()
