@@ -32,7 +32,6 @@ public slots:
     void getNewOrder();    
     void testConnection();
     void deleteOrder(int value);
-
     void testRequest(QNetworkReply *reply);
     void getRequest(QNetworkReply *reply);
 
@@ -48,12 +47,12 @@ private:
     QLabel *statusLabel;
     QLabel *userLabel;
 
-     QListWidget *xmloutput;
-     QTextEdit *dataOutput;
+    QListWidget *xmloutput;
+    QTextEdit *dataOutput;
 
-     QNetworkAccessManager *netManager;
+    QNetworkAccessManager *netManager;
 
-     QNetworkAccessManager *netManager2;
+    QNetworkAccessManager *netManager2;
 
 
 

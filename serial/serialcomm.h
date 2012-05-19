@@ -14,6 +14,9 @@ class SerialComm : public QWidget
 public:
     explicit SerialComm(QWidget *parent = 0, QString device="/dev/ttyS1");
     int sendString(QString string);
+    void initSerial();
+    void closeSerial();
+    int debugSendString(QString string);
 
 private:
 
