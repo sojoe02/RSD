@@ -15,6 +15,7 @@
 #include <QtNetwork/QNetworkProxy>
 #include <QtXml/QDomDocument>
 #include <QLabel>
+ #include <QVector>
 
 
 
@@ -25,23 +26,39 @@ public:
     explicit RestWidget(QWidget *parent = 0);
     
 signals:
-    void sendOrder(std::vector<int> *order); //will be used by getNewOrder slot!
+    void sendOrder(QVector<int> *order); //will be used by getNewOrder slot!
     void connectionError();
+    void noOrderError();
+    void noTicketError();
+
+
     
 public slots:
-    void getNewOrder();    
-    void testConnection();
-    void deleteOrder(int value);
-    void testRequest(QNetworkReply *reply);
-    void getRequest(QNetworkReply *reply);
+
+    void getOrderUrls();
+    void parseOrderUrls(QNetworkReply *reply);
+
+    void getNewOrder();
+    void parseOrderInfo(QNetworkReply *reply);
+    //void takeOrder(QNetworkReply *reply);
+
+
+
 
 private:
+    bool getThisOrder(QUrl url);
 
     QString server_url;
+    int order_ptr; //for tracking what order we are currently at.
+
     QString user;
     QString password; //not sure if needed!
     QString status;
 
+    QString currentTicket;
+
+    QVector<QString> *orderIDs;
+    QVector<int> *currentOrder;
 
     QLabel *serverLabel;
     QLabel *statusLabel;
@@ -50,7 +67,7 @@ private:
     QListWidget *xmloutput;
     QTextEdit *dataOutput;
 
-    QNetworkAccessManager *netManager;
+    //QNetworkAccessManager *netManager;
 
     QNetworkAccessManager *netManager2;
 
@@ -59,7 +76,7 @@ private:
 
     //QNetworkRequest *request;
 
-    std::vector<int> *currentOrder;
+    //std::vector<int> *currentOrder;
 };
 
 #endif // RESTWIDGET_H
