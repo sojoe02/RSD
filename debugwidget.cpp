@@ -66,7 +66,7 @@ void DebugWidget:: testVision()
     feedback->addItem("Printing found brick locations:");
     VisionSystem vs;
 
-    cv::namedWindow("output", CV_WINDOW_NORMAL);
+    //cv::namedWindow("output", CV_WINDOW_NORMAL);
 
     vs.findBricks();
 
@@ -89,8 +89,8 @@ void DebugWidget:: testVision()
     }
 
     feedback->addItem("Vision test done");
-    cv::imshow("output", vs.outputImage);
-    cv::waitKey(0);
+    //cv::imshow("output", vs.outputImage);
+    //cv::waitKey(1);
 }
 
 void DebugWidget:: testOrderSystem()

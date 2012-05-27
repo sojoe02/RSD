@@ -30,6 +30,9 @@ signals:
     void connectionError();
     void noOrderError();
     void noTicketError();
+    void noTicketToDeleteError();
+    void logNotReceived();
+
 
 
     
@@ -42,20 +45,26 @@ public slots:
     void parseOrderInfo(QNetworkReply *reply);
     //void takeOrder(QNetworkReply *reply);
 
+    void orderDone();
+    void testLog();
 
-
+    void updateLog(QString comment, QString event);
+    void receiveLogReply(QNetworkReply *reply);
 
 private:
     bool getThisOrder(QUrl url);
 
     QString server_url;
+    QString order_url;
+    QString currentTicket;
+
     int order_ptr; //for tracking what order we are currently at.
 
     QString user;
     QString password; //not sure if needed!
     QString status;
 
-    QString currentTicket;
+
 
     QVector<QString> *orderIDs;
     QVector<int> *currentOrder;

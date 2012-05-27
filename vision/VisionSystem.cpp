@@ -188,5 +188,5 @@ bool VisionSystem::findBricks() {
        //cvDestroyWindow( "Yellow" );
        //cvDestroyWindow( "Blue" );
        //cvDestroyWindow( "Red" );
-       return 0;
+       //return 0;
      }

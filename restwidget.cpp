@@ -7,15 +7,18 @@
 #include <QTextDocument>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QDateTime>
+#include <QDebug>
 
 RestWidget::RestWidget(QWidget *parent) :
     QWidget(parent)
 {
     //server_url = "http://httpbin.org/get";
-    server_url = "http://192.168.0.100/orders/";
+    server_url = "http://192.168.0.100";
     user = "team1";
     status = "idle";
     password = "nothing";
+
+    currentTicket = "none";
 
     serverLabel = new QLabel;
     userLabel = new QLabel;
@@ -35,11 +38,11 @@ RestWidget::RestWidget(QWidget *parent) :
     //test area:
     QPushButton *TestButton = new QPushButton(QApplication::translate("PackML","Get Orders"));
     QPushButton *handleOrderTest = new QPushButton(QApplication::translate("PackML","Handle Order"));
+    QPushButton *testLog = new QPushButton(QApplication::translate("PackMl", "Log"));
 
     QObject::connect(TestButton, SIGNAL(pressed()),this,SLOT(getOrderUrls()));
     QObject::connect(handleOrderTest,SIGNAL(pressed()),this,SLOT(getNewOrder()));
-
-
+    QObject::connect(testLog,SIGNAL(pressed()),this,SLOT(testLog()));
 
     //DEFINE THE OUTPUT AREA:
     xmloutput = new QListWidget();
@@ -54,14 +57,6 @@ RestWidget::RestWidget(QWidget *parent) :
     //SET UP THE NETWORK CONNECTION:
     netManager2 = new QNetworkAccessManager(this);
 
-    //QObject::connect(netManager, SIGNAL(finished(QNetworkReply *)),this,
-
-
-
-
-    //QObject::connect(netManager2, SIGNAL(finished(QNetworkReply *)),this,
-    //                            SLOT(testRequest(QNetworkReply *)));
-
     //SET THE LAYOUT:
     QGridLayout *layout = new QGridLayout();
 
@@ -72,6 +67,7 @@ RestWidget::RestWidget(QWidget *parent) :
     layout->addWidget(xmloutput,1,0,1,3);
     layout->addWidget(dataOutput,3,0,3,3);
     layout->addWidget(handleOrderTest,2,1);
+    layout->addWidget(testLog,2,2);
 
     setLayout(layout);
 }
@@ -93,7 +89,7 @@ void RestWidget::getOrderUrls(){
     request.setRawHeader("Accept", "application/xml");
     request.setRawHeader("Content-Type", "application/xml");
 
-    request.setUrl(QUrl(server_url));
+    request.setUrl(QUrl(server_url+"/orders/"));
 
     //Wait for a reply:
     QNetworkReply *reply = netManager2->get(request);
@@ -134,11 +130,13 @@ void RestWidget::getNewOrder(){
     QNetworkRequest request;
 
     if(!orderIDs->empty()){
-        request.setUrl(QUrl(orderIDs->at(order_ptr)));
+
+        order_url = orderIDs->at(order_ptr);
+
+        request.setUrl(QUrl(order_url));
 
         QObject::connect(netManager2, SIGNAL(finished(QNetworkReply *)),this,
                          SLOT(parseOrderInfo(QNetworkReply *)));
-
         order_ptr++;
 
         if(order_ptr >= orderIDs->size()){
@@ -150,7 +148,6 @@ void RestWidget::getNewOrder(){
         emit noOrderError();
         xmloutput->addItem("No order urls present");
     }
-
 }
 
 void RestWidget::parseOrderInfo(QNetworkReply *reply){
@@ -173,10 +170,8 @@ void RestWidget::parseOrderInfo(QNetworkReply *reply){
 
         QString ready = doc.elementsByTagName("status").item(0).toElement().text();
 
-
         if(QString::compare(ready,"ready",Qt::CaseInsensitive)  == 0){
             if(getThisOrder(reply->url())){
-
                 QString reds = doc.elementsByTagName("red").item(0).toElement().text();
                 currentOrder->append(reds.toInt());
 
@@ -185,20 +180,15 @@ void RestWidget::parseOrderInfo(QNetworkReply *reply){
 
                 QString yellows = doc.elementsByTagName("yellow").item(0).toElement().text();
                 currentOrder->append(yellows.toInt());
-
             }
             else{
                 emit noTicketError();
             }
         }
-
     }
-
-
 }
 
 //test if the order is availible (yeah its synchronous!):
-
 bool RestWidget::getThisOrder(QUrl url){
 
     QByteArray putData;
@@ -235,12 +225,120 @@ bool RestWidget::getThisOrder(QUrl url){
         currentTicket = doc.elementsByTagName("ticket").item(0).toElement().text();
 
         if(QString::compare("none",currentTicket) == 0){
+            emit noTicketError();
             return false;
         }
 
     }
 }
 
+void RestWidget::orderDone(){
+
+
+    if(QString::compare("none",currentTicket)== 0){
+        emit noTicketToDeleteError();
+        qDebug() << "Emiting no ticket to delete error";
+        return;
+    } else{
+        //first to the delete on the server:
+        qDebug() << "deleting order to:" << order_url << "/" << currentTicket;
+        QNetworkRequest request;
+        request.setUrl(QUrl(order_url + "/" + currentTicket));
+        netManager2->deleteResource(request);
+        qDebug() << "posting order log to" << order_url;
+        //then log the order:
+    }
+
+}
+
+void RestWidget::updateLog(QString comment, QString event){
+
+    //QNetworkRequest request;
+    //request.setUrl(QUrl(server_url +"/log"));
+
+    //make the log xml:
+    QDomDocument doc;
+
+    QDomProcessingInstruction instr = doc.createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
+
+    doc.appendChild(instr);
+
+    QDomElement root = doc.createElement( "log_entry" );
+    doc.appendChild( root );
+
+    QDomElement timeNode = doc.createElement("time");
+    //timeNode.setNodeValue(QDateTime::currentDateTime().toString());
+    QDate date = QDate::currentDate();
+    QTime time = QTime::currentTime();
+    timeNode.appendChild(doc.createTextNode(date.toString("yyyy-MM-dd") + " " + time.toString()));
+    root.appendChild(timeNode);
+
+    QDomElement eventNode = doc.createElement("event");
+    eventNode.appendChild(doc.createTextNode(event));
+    root.appendChild(eventNode);
+
+    QDomElement cell_idNode = doc.createElement("cell_id");
+    cell_idNode.appendChild(doc.createTextNode("1"));
+    root.appendChild(cell_idNode);
+
+    QDomElement commentNode = doc.createElement("comment");
+    commentNode.appendChild(doc.createTextNode(comment));
+    root.appendChild(commentNode);
+
+    qDebug() << doc.toString();
+
+    QByteArray putData;
+    putData.append(doc.toString());
+
+    QNetworkRequest request;
+
+    request.setUrl(QUrl(server_url +"/log"));
+
+    QObject::connect(netManager2, SIGNAL(finished(QNetworkReply *)),this,
+                     SLOT(receiveLogReply(QNetworkReply*)));
+
+    QNetworkReply *reply = netManager2->post( request,putData );
+
+}
+
+
+void RestWidget::receiveLogReply(QNetworkReply *reply){
+
+    QObject::disconnect(netManager2, SIGNAL(finished(QNetworkReply*)),this, SLOT(receiveLogReply(QNetworkReply*)));
+
+
+    if(reply->error()>0){
+        xmloutput->addItem(QTime::currentTime().toString() +" : " + reply->errorString());
+        qDebug() << "no connection";
+        emit connectionError();
+
+    } else{
+
+        qDebug() << "receiving response";
+
+        QByteArray data = reply->readAll();
+        QDomDocument doc;
+
+        dataOutput->setText(data);
+        doc.setContent(data);
+        xmloutput->addItem(data);
+
+        QString response = data;
+
+        if(QString::compare("Created",response) == 0){
+            qDebug()<<"not log received";
+            emit logNotReceived();
+        }
+
+    }
+    qDebug() << "logging done";
+}
+
+void RestWidget::testLog(){
+    qDebug() << "testing the log function";
+    updateLog("testing the log please ignore", "PML_Execute");
+
+}
 
 
 
