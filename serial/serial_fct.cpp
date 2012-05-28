@@ -10,17 +10,17 @@ SerialStream serial_port ;
 
 void Serial_Open_Port(string comPort)
 {
-	serial_port.Open( comPort ) ;
-	if(! serial_port.good())
+        serial_port.Open( comPort ) ;
+        if(! serial_port.good())
 	{
 		std::cerr<<"Error: could not open serial port"<<std::endl;
 		exit(1);
 	}
-	serial_port.SetBaudRate( SerialStreamBuf::BAUD_9600) ;
-	serial_port.SetCharSize( SerialStreamBuf::CHAR_SIZE_8 ) ;
-	serial_port.SetNumOfStopBits(1) ;
-	serial_port.SetParity( SerialStreamBuf::PARITY_EVEN ) ;
-	serial_port.SetFlowControl( SerialStreamBuf::FLOW_CONTROL_NONE ) ;
+        serial_port.SetBaudRate( SerialStreamBuf::BAUD_9600) ;
+        serial_port.SetCharSize( SerialStreamBuf::CHAR_SIZE_8 ) ;
+        serial_port.SetNumOfStopBits(1) ;
+        serial_port.SetParity( SerialStreamBuf::PARITY_EVEN ) ;
+        serial_port.SetFlowControl( SerialStreamBuf::FLOW_CONTROL_NONE ) ;
 }
 void Serial_Send_Message(string message)
 {
@@ -36,8 +36,8 @@ void Serial_Send_Message(string message)
 }
 void Serial_Close_Port(void)
 {
-	if(serial_port.IsOpen())
+        if(serial_port.IsOpen())
 	{
-		serial_port.Close();
+                serial_port.Close();
 	}
 }

@@ -5,8 +5,8 @@
  *      Author: dan
  */
 
-#ifndef SERIAL_FUNCTIONS_H_
-#define SERIAL_FUNCTIONS_H_
+#ifndef SERIAL_FCT_H_
+#define SERIAL_FCT_H_
 
 #include <SerialStream.h>
 #include <string>
@@ -19,4 +19,4 @@ void Serial_Open_Port(string comPort);
 void Serial_Send_Message(string message);
 void Serial_Close_Port(void);
 
-#endif /* SERIAL_FUNCTIONS_H_ */
+#endif /* SERIAL_FCT_H_ */

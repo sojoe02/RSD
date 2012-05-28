@@ -14,12 +14,10 @@ SOURCES += main.cpp \
     oeewidget.cpp \
     visionwidget.cpp \
     vision/VisionSystem.cpp \
-    serial/serialcomm.cpp\
-    plccomms/rsd_server.cpp \
-    plccomms/serverthread.cpp \
     debugwidget.cpp\
     serial/serialrobot.cpp\
-    serial/serial_fct.cpp
+    serial/serial_fct.cpp\
+    serial/serial_fct2.cpp
 
 
 
@@ -30,13 +28,11 @@ HEADERS += \
     oeewidget.h \
     visionwidget.h \
     vision/VisionSystem.h \
-    serial/serialcomm.h \
-    plccomms/rsd_server.h \
-    plccomms/serverthread.h \
     debugwidget.h \
     serial/serialrobot.h\
     serial/SerialStream.h\
-    serial/serial_fct.h
+    serial/serial_fct.h\
+    serial/serial_fct2.h
 
 OTHER_FILES +=
 

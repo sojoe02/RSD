@@ -8,7 +8,8 @@ class SerialRobot
 {
 public:
     SerialRobot();
-    void send();
+    void sendRobotCoor(std::string);
+    void sendPLCcmd(int value, int type);
 };
 
 #endif // SERIALROBOT_H

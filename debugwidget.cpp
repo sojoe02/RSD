@@ -1,9 +1,11 @@
 #include "debugwidget.h"
-#include "serial/serialcomm.h"
+//#include "serial/serialcomm.h"
 #include "plccomms/rsd_server.h"
 #include "vision/VisionSystem.h"
 #include "serial/serialrobot.h"
 #include "string"
+#include <QtCore>
+#include <iostream>
 
 DebugWidget::DebugWidget(QWidget *parent) :
     QWidget(parent)
@@ -35,19 +37,24 @@ DebugWidget::DebugWidget(QWidget *parent) :
 
 void DebugWidget:: testPLC()
 {
+    bool ok;
+    int position = QInputDialog::getInt(this,tr("input position"),tr("placeholder"),100,0,199999,1,&ok);
 
+    SerialRobot serialrobot;
+
+    serialrobot.sendPLCcmd(position,3);
 }
 
 void DebugWidget:: testRobot()
 {
     //    SerialComm *serial = new SerialComm();
-    //    feedback->addItem("Performing serial to robot test");
-    //    feedback->addItem("Waiting for parameters");
+        feedback->addItem("Performing serial to robot test");
+        feedback->addItem("Waiting for parameters");
 //
-  //     bool ok;
-
-    //std::string text = QInputDialog::getText(this,tr("input coordinates"),tr("placeholder"),QLineEdit::Normal,tr("100,400,90,1"), &ok).toStdString();
-
+     bool ok;
+//100,400,90,1
+    QString text = QInputDialog::getText(this,tr("input coordinates"),tr("placeholder"),QLineEdit::Normal,tr("300,550,117,2"), &ok);
+    std::string test = std::string(text.toAscii());
 
     //    if (ok && !text.isEmpty()){
     //        feedback->addItem("Sending:\t" + text);
@@ -61,7 +68,8 @@ void DebugWidget:: testRobot()
     //    }
     //    serial->deleteLater();
     SerialRobot serialrobot;
-    serialrobot.send();
+    std::string tmpString= "300,550,117,2";
+    serialrobot.sendRobotCoor(test);
 }
 
 void DebugWidget:: testVision()
