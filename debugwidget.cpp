@@ -2,6 +2,8 @@
 #include "serial/serialcomm.h"
 #include "plccomms/rsd_server.h"
 #include "vision/VisionSystem.h"
+#include "serial/serialrobot.h"
+#include "string"
 
 DebugWidget::DebugWidget(QWidget *parent) :
     QWidget(parent)
@@ -38,26 +40,28 @@ void DebugWidget:: testPLC()
 
 void DebugWidget:: testRobot()
 {
-    SerialComm *serial = new SerialComm();
-    feedback->addItem("Performing serial to robot test");
-    feedback->addItem("Waiting for parameters");
+    //    SerialComm *serial = new SerialComm();
+    //    feedback->addItem("Performing serial to robot test");
+    //    feedback->addItem("Waiting for parameters");
+//
+  //     bool ok;
 
-    bool ok;
-
-    QString text = QInputDialog::getText(this,tr("input coordinates"),tr("placeholder"),QLineEdit::Normal,tr("090909"), &ok);
+    //std::string text = QInputDialog::getText(this,tr("input coordinates"),tr("placeholder"),QLineEdit::Normal,tr("100,400,90,1"), &ok).toStdString();
 
 
-    if (ok && !text.isEmpty()){
-        feedback->addItem("Sending:\t" + text);
-        int status = serial->debugSendString(text);
-        if(status == -1){
-            feedback->addItem("Serial port cannot be opened");
-        }
-        if(status == 1){
-            feedback->addItem("Data send to serial port successfully");
-        }
-    }
-    serial->deleteLater();
+    //    if (ok && !text.isEmpty()){
+    //        feedback->addItem("Sending:\t" + text);
+    //        int status = serial->debugSendString(text);
+    //        if(status == -1){
+    //            feedback->addItem("Serial port cannot be opened");
+    //        }
+    //        if(status == 1){
+    //            feedback->addItem("Data send to serial port successfully");
+    //        }
+    //    }
+    //    serial->deleteLater();
+    SerialRobot serialrobot;
+    serialrobot.send();
 }
 
 void DebugWidget:: testVision()
@@ -66,9 +70,10 @@ void DebugWidget:: testVision()
     feedback->addItem("Printing found brick locations:");
     VisionSystem vs;
 
-    //cv::namedWindow("output", CV_WINDOW_NORMAL);
+    cv::namedWindow("output", CV_WINDOW_NORMAL);
 
     vs.findBricks();
+
 
     for (int i = 0; i < vs.bricks.size(); i++)
     {
@@ -85,12 +90,12 @@ void DebugWidget:: testVision()
                 + "," + QString::number(vs.bricks[i].y)
                 +"] - : \t" + QString::number(vs.bricks[i].orientation);
 
-        feedback->addItem(thing);
+        feedback->addItem(thing);        
     }
 
     feedback->addItem("Vision test done");
-    //cv::imshow("output", vs.outputImage);
-    //cv::waitKey(1);
+    cv::imshow("output", vs.outputImage);
+    cv::waitKey(1);
 }
 
 void DebugWidget:: testOrderSystem()

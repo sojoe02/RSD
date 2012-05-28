@@ -12,6 +12,7 @@
 #include <iostream>
 #include "VisionSystem.h"
 #include "time.h"
+#include "QDebug"
 
 
      // A Simple Camera Capture Framework
@@ -26,6 +27,8 @@ bool VisionSystem::findBricks() {
            getchar();
            break;
          }
+
+         if (i > 9) {
 
          cv::Mat ref = frame;
          cv::Mat org;
@@ -105,6 +108,7 @@ bool VisionSystem::findBricks() {
                  c = 2;
              }
 
+
              if (smallestx+100 >= org.cols || smallesty+100 >= org.rows || smallestx-10 <= 0 || smallesty-10 <= 0) {
                  //error
                  break;
@@ -115,8 +119,6 @@ bool VisionSystem::findBricks() {
              cv::cornerHarris(smaller, dst, settings[c][0], settings[c][1], settings[c][2]);
 
              cv::normalize(dst, dst, 0, 255, cv::NORM_MINMAX, CV_32FC1, cv::Mat());
-
-
 
              bool add = true;
 
@@ -179,6 +181,8 @@ bool VisionSystem::findBricks() {
 
          outputImage = segmented;
 
+
+       }
          // Have a small delay
          cv::waitKey(1);
        }

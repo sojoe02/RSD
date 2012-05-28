@@ -12,7 +12,7 @@ class SerialComm : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SerialComm(QWidget *parent = 0, QString device="/dev/ttyS1");
+    explicit SerialComm(QWidget *parent = 0, QString device="/dev/ttyS0");
     int sendString(QString string);
     void initSerial();
     void closeSerial();
