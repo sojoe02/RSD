@@ -1,6 +1,6 @@
 #include "debugwidget.h"
 //#include "serial/serialcomm.h"
-#include "plccomms/rsd_server.h"
+//#include "plccomms/rsd_server.h"
 #include "vision/VisionSystem.h"
 #include "serial/serialrobot.h"
 #include "string"

@@ -31,8 +31,9 @@ PackMLw::PackMLw(QWidget *parent, RestWidget *rest) :
     imageLabel->setScaledContents(true);
     imageLabel->setPixmap(QPixmap(QPixmap(":/packmlressource/init.png")));
     QScrollArea *scrollArea = new QScrollArea;
+    scrollArea->setBackgroundRole(QPalette::Light);
     scrollArea->setMaximumHeight(200);
-    scrollArea->setMaximumWidth(400);
+    //scrollArea->setMaximumWidth(400);
     scrollArea->setWidget(imageLabel);
 
 
@@ -41,10 +42,12 @@ PackMLw::PackMLw(QWidget *parent, RestWidget *rest) :
     QVBoxLayout *imagelayout = new QVBoxLayout();
     imagelayout->addWidget(scrollArea);
     QWidget *imagewidget = new QWidget();
+    //imagewidget->setFixedSize(300,600);
     imagewidget->setLayout(imagelayout);
 
     //make a button widget with vertical layout:
     QVBoxLayout *buttonlayout = new QVBoxLayout();
+
 
     buttonlayout->addWidget(holdButton);
     buttonlayout->addWidget(suspendButton);
@@ -53,8 +56,21 @@ PackMLw::PackMLw(QWidget *parent, RestWidget *rest) :
     buttonlayout->addWidget(resetButton);
     buttonlayout->addWidget(startButton);
     buttonlayout->addWidget(clearButton);
-    buttonlayout->addWidget(stopButton);
-    buttonlayout->addWidget(abortButton);
+    //buttonlayout->addWidget(stopButton);
+    //buttonlayout->addWidget(abortButton);
+
+    abortButton->setFixedHeight(50);
+    stopButton->setFixedHeight(50);
+
+    QGridLayout *gridlayout = new QGridLayout();
+
+    gridlayout->addWidget(abortButton,1,1,1,1);
+    gridlayout->addWidget(stopButton,2,1,1,1);
+
+    QWidget *gridbuttonwidget = new QWidget();
+
+    gridbuttonwidget->setLayout(gridlayout);
+    gridbuttonwidget->setFixedHeight(120);
 
     holdButton->hide();
     suspendButton->hide();
@@ -65,15 +81,15 @@ PackMLw::PackMLw(QWidget *parent, RestWidget *rest) :
     startButton->hide();
     clearButton->hide();
 
-
     QWidget *buttonwidget = new QWidget();
+    buttonwidget->setFixedWidth(200);
     buttonwidget->setLayout(buttonlayout);
 
     //make the packML widget layout and add all items:
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->addWidget(buttonwidget);
-    //layout->addWidget(label);
-    layout->addWidget(imagewidget);
+    QGridLayout *layout = new QGridLayout();
+    layout->addWidget(buttonwidget,1,1,1,1);
+    layout->addWidget(gridbuttonwidget,2,1,2,3);
+    layout->addWidget(imagewidget,1,2,1,1);
     setLayout(layout);
 
     //DEFINE the Statemachine:
@@ -81,8 +97,8 @@ PackMLw::PackMLw(QWidget *parent, RestWidget *rest) :
 
     delay=1500;
 
-    this->setMaximumHeight(350);
-    this->setMaximumWidth(550);
+    //this->setMaximumHeight(350);
+    //this->setMaximumWidth(550);
 
     //QObject::connect(this, SIGNAL(sc()), restwidget, SLOT(getNewOrder()));
 }
