@@ -5,7 +5,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QVBoxLayout>
-#include <QElapsedTimer>
+#include <QTime>
 
 class OEEWidget : public QWidget
 {
@@ -32,19 +32,19 @@ private:
     QLabel *label;
     QLabel *OEEoutput;
     double OEEnumber;
+    double cycletime;
     QVBoxLayout *layout;
 
-    QElapsedTimer downtimer;
-    QElapsedTimer cycletimer;
-    QElapsedTimer operatingTime;
+    QTime downtimer;
+    QTime cycletimer;
+    QTime operatingtimer;
 
-
-
-    qint64 totalOrders;
-    qint64 faultyOrders;
-    qint64 uptime;
-    qint64 downtime;
-    static const qint64 idealcycletime = 100000;
+    int totalOrders;
+    int faultyOrders;
+    int uptime;
+    int downtime;
+    static const int idealcycletime = 10000;
+    static const int plannedproductiontime=100;
 
 
     

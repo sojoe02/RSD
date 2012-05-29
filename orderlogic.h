@@ -3,7 +3,9 @@
 
 #include <QWidget>
 #include <QVector>
+#include <vector>
 #include <frame.h>
+#include <map>
 #include <vision/VisionSystem.h>
 
 class orderlogic : public QWidget
@@ -16,44 +18,37 @@ signals:
     
 public slots:
     void scanTable();
+    void resetSystem();
+    void handleOrder(std::vector<int> orderarray);
     void timedSC();
 
 private:
 
     void mapFromVisionToRobot(int Vframe, VisionSystem::Legobrick);
 
-    void brickBinning(std::vector<VisionSystem::Legobrick> bricks, Frame *RF1, Frame *RF2);
 
     //the different robotframes:
-    Frame *RF_11;
-    Frame *RF_12;
 
-    Frame *RF_21;
-    Frame *RF_22;
+    std::vector<Frame*> frames;
 
-    Frame *RF_31;
-    Frame *RF_32;
-
-    Frame *RF_41;
-    Frame *RF_42;
-
+    int activeframe_ptr;
     //gandry position:
     static const int gantryMax = 200000;
-    static const int VFinterval = gantryMax/4;
+    static const int no_frames = 6;
+    static const int FInterval = gantryMax/no_frames;
     //x value for binning in different frames:
     static const int Xmax = 530;
-    static const int Xbin = Xmax/2;
     //difference between vision and robot system:
     static const int Yoff = 318;
     static const int Xoff = -86;
     //gandry position of the vision frames:
     static const int VF_1pos = 0;
-    static const int VF_2pos = 1*VFinterval-Xoff;
-    static const int VF_3pos = 2*VFinterval-Xoff;
-    static const int VF_4pos = 3*VFinterval-Xoff;
+    static const int VF_2pos = 1*FInterval-Xoff;
+    static const int VF_3pos = 2*FInterval-Xoff;
+    static const int VF_4pos = 3*FInterval-Xoff;
     //gandry delay for movement purposes:
     static const int DELAY = 10000;
-
+    static const int Roff = 100;
 
 
 };

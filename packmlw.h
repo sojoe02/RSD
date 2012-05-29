@@ -6,12 +6,13 @@
 #include <QLabel>
 #include <QApplication>
 #include "restwidget.h"
+#include "oeewidget.h"
 
 class PackMLw : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PackMLw(QWidget *parent = 0, RestWidget *rest=0);
+    explicit PackMLw(QWidget *parent = 0, RestWidget *rest=0, OEEWidget *oee = 0);
     
 signals:
     void sc();
@@ -91,6 +92,7 @@ private:
     QLabel *imageLabel;
 
     RestWidget *restwidget;
+    OEEWidget *oeewidget;
 
     int delay;
 };

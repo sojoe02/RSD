@@ -6,6 +6,7 @@
 #include "string"
 #include <QtCore>
 #include <iostream>
+#include <orderlogic.h>
 
 DebugWidget::DebugWidget(QWidget *parent) :
     QWidget(parent)
@@ -108,5 +109,8 @@ void DebugWidget:: testVision()
 
 void DebugWidget:: testOrderSystem()
 {
-
+    //scan the table
+    feedback->addItem("Scanning the table");
+    orderlogic logic;
+    logic.scanTable();
 }

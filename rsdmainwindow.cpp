@@ -21,12 +21,15 @@ RSDMainWindow::RSDMainWindow(QWidget *parent) :
     QTabWidget *tabWidget = new QTabWidget();
 
 
+    OEEWidget *oeew = new OEEWidget();
+
     PackMLw *packml = new PackMLw(this,rwidget);
+
     packml->setMaximumWidth(700);
 
     QHBoxLayout *mlayout = new QHBoxLayout();
     mlayout->addWidget(packml);
-    mlayout->addWidget(new OEEWidget());
+    mlayout->addWidget(oeew);
 
     QWidget *main = new QWidget();
 

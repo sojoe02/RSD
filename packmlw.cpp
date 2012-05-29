@@ -1,13 +1,14 @@
 #include "packmlw.h"
 #include "iostream"
 #include "restwidget.h"
+#include "oeewidget.h"
 
 #include <QtGui>
 
 
 
-PackMLw::PackMLw(QWidget *parent, RestWidget *rest) :
-    QWidget(parent), restwidget(rest)
+PackMLw::PackMLw(QWidget *parent, RestWidget *rest, OEEWidget *oee) :
+    QWidget(parent), restwidget(rest), oeewidget(oee)
 {
     this->setWindowTitle(QApplication::translate("PackML", "Pack ML"));
 
