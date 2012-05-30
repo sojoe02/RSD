@@ -2,13 +2,13 @@
 #include "iostream"
 #include "restwidget.h"
 #include "oeewidget.h"
-
+#include "orderlogic.h"
 #include <QtGui>
 
 
 
-PackMLw::PackMLw(QWidget *parent, RestWidget *rest, OEEWidget *oee) :
-    QWidget(parent), restwidget(rest), oeewidget(oee)
+PackMLw::PackMLw(QWidget *parent, RestWidget *rest, OEEWidget *oee, QListWidget *output) :
+    QWidget(parent), restwidget(rest), oeewidget(oee), output(output)
 {
     this->setWindowTitle(QApplication::translate("PackML", "Pack ML"));
 
@@ -27,15 +27,27 @@ PackMLw::PackMLw(QWidget *parent, RestWidget *rest, OEEWidget *oee) :
 
     //DEFINE THE GRAPHICS WIDGET:
     imageLabel = new QLabel;
-    imageLabel->setBackgroundRole(QPalette::Base);
-    imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    //imageLabel->setBackgroundRole(QPalette::Base);
+    //imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     imageLabel->setScaledContents(true);
     imageLabel->setPixmap(QPixmap(QPixmap(":/packmlressource/init.png")));
+
+    QPalette palette = this->palette();
+    palette.setColor( backgroundRole(), QColor( 255, 255, 255) );
+
+
     QScrollArea *scrollArea = new QScrollArea;
-    scrollArea->setBackgroundRole(QPalette::Light);
-    scrollArea->setMaximumHeight(200);
+    scrollArea->setPalette(palette);
+    scrollArea->setAutoFillBackground(true);
+    //scrollArea->setMaximumHeight(200);
+    scrollArea->setFrameShape(QFrame::NoFrame);
     //scrollArea->setMaximumWidth(400);
     scrollArea->setWidget(imageLabel);
+
+    this->setPalette( palette );
+    this->setAutoFillBackground( true );
+
+
 
 
     //SET THE LAYOUT:
@@ -46,32 +58,33 @@ PackMLw::PackMLw(QWidget *parent, RestWidget *rest, OEEWidget *oee) :
     //imagewidget->setFixedSize(300,600);
     imagewidget->setLayout(imagelayout);
 
-    //make a button widget with vertical layout:
-    QVBoxLayout *buttonlayout = new QVBoxLayout();
+    QHBoxLayout *buttonlayout = new QHBoxLayout();
 
-
+    buttonlayout->addWidget(startButton);
+    buttonlayout->addWidget(resetButton);
+    buttonlayout->addWidget(clearButton);
     buttonlayout->addWidget(holdButton);
     buttonlayout->addWidget(suspendButton);
     buttonlayout->addWidget(unholdButton);
     buttonlayout->addWidget(unsuspendButton);
-    buttonlayout->addWidget(resetButton);
-    buttonlayout->addWidget(startButton);
-    buttonlayout->addWidget(clearButton);
-    //buttonlayout->addWidget(stopButton);
-    //buttonlayout->addWidget(abortButton);
+
+
 
     abortButton->setFixedHeight(50);
     stopButton->setFixedHeight(50);
 
     QGridLayout *gridlayout = new QGridLayout();
 
-    gridlayout->addWidget(abortButton,1,1,1,1);
-    gridlayout->addWidget(stopButton,2,1,1,1);
+    gridlayout->addWidget(abortButton,1,1);
+    gridlayout->addWidget(stopButton,2,1);
+    gridlayout->addWidget(oeewidget,3,1);
 
     QWidget *gridbuttonwidget = new QWidget();
+    output = new QListWidget();
 
     gridbuttonwidget->setLayout(gridlayout);
-    gridbuttonwidget->setFixedHeight(120);
+
+
 
     holdButton->hide();
     suspendButton->hide();
@@ -83,25 +96,45 @@ PackMLw::PackMLw(QWidget *parent, RestWidget *rest, OEEWidget *oee) :
     clearButton->hide();
 
     QWidget *buttonwidget = new QWidget();
-    buttonwidget->setFixedWidth(200);
+    //buttonwidget->setFixedWidth(200);
     buttonwidget->setLayout(buttonlayout);
+
 
     //make the packML widget layout and add all items:
     QGridLayout *layout = new QGridLayout();
-    layout->addWidget(buttonwidget,1,1,1,1);
-    layout->addWidget(gridbuttonwidget,2,1,2,3);
-    layout->addWidget(imagewidget,1,2,1,1);
+    layout->addWidget(buttonwidget,2,1);
+    layout->addWidget(gridbuttonwidget,3,1);
+    layout->addWidget(imagewidget,1,1);
+
     setLayout(layout);
 
-    //DEFINE the Statemachine:
     definemachine();
 
     delay=1500;
 
-    //this->setMaximumHeight(350);
-    //this->setMaximumWidth(550);
+    //initialize the orderLogic and hook it up:
+    orderlog = new orderlogic();
+    //hook up the signals to the statemachine:
 
-    //QObject::connect(this, SIGNAL(sc()), restwidget, SLOT(getNewOrder()));
+
+
+    //Order flow:
+    QObject::connect(starting, SIGNAL(entered()), restwidget, SLOT(getOrderUrls()));
+
+
+    QObject::connect(this,SIGNAL(neworder()),restwidget,SLOT(getNewOrder()));
+    QObject::connect(restwidget,SIGNAL(sendOrder(QVector<int>*)),orderlog,SLOT(handleOrder(std::vector<int>)));
+    QObject::connect(orderlog,SIGNAL(orderdone()),restwidget,SLOT(orderDone()));
+    QObject::connect(orderlog,SIGNAL(orderdone()),this,SLOT(timedSC()));
+    //QObject::connect(orderlog,SIGNAL(orderincomplete()),reswidget,SLOT())
+    //QObject::connect(this,)
+
+    //hook up the signals:
+
+
+
+
+
 }
 
 void PackMLw::definemachine(){
@@ -131,7 +164,7 @@ void PackMLw::definemachine(){
     suspending->addTransition(this,SIGNAL(sc()),suspended);
     suspended->addTransition(unsuspendButton,SIGNAL(pressed()),unsuspending);
     unsuspending->addTransition(this,SIGNAL(sc()),execute);
-    resetting->addTransition(this,SIGNAL(sc()),idle);    
+    resetting->addTransition(this,SIGNAL(sc()),idle);
     idle->addTransition(startButton,SIGNAL(pressed()),starting);
     starting->addTransition(this,SIGNAL(sc()),execute);
     execute->addTransition(this,SIGNAL(sc()),completing);
@@ -204,7 +237,6 @@ void PackMLw::definemachine(){
     machine->addState(clear);
 
     clear->setInitialState(clearing);
-
     ready->setInitialState(resetting);
 
     machine->setInitialState(clear);
@@ -212,7 +244,7 @@ void PackMLw::definemachine(){
 }
 
 //THE SIGNAL FUNCTIONS:
-void PackMLw::timedSC(){
+void PackMLw::timedSC(){    
     emit sc();
 }
 
@@ -280,14 +312,15 @@ void PackMLw::stateStarting(){
 
 void PackMLw::stateExecute(){
     imageLabel->setPixmap(QPixmap(":/packmlressource/execute.png"));
-    QTimer::singleShot(10000,this,SLOT(timedSC()));
+    //QTimer::singleShot(10000,this,SLOT(timedSC()));
     //when done (needs to be implemented):
     //emit sc();
+    emit neworder();
 }
 
 void PackMLw::stateCompleting(){
     imageLabel->setPixmap(QPixmap(":/packmlressource/completing.png"));
-    QTimer::singleShot(10000,this,SLOT(timedSC()));
+    QTimer::singleShot(delay,this,SLOT(timedSC()));
 }
 
 void PackMLw::stateComplete(){

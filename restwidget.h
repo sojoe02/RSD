@@ -15,7 +15,7 @@
 #include <QtNetwork/QNetworkProxy>
 #include <QtXml/QDomDocument>
 #include <QLabel>
- #include <QVector>
+#include <QVector>
 
 
 
@@ -23,7 +23,7 @@ class RestWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit RestWidget(QWidget *parent = 0);
+    explicit RestWidget(QWidget *parent = 0, QListWidget *output=0);
     
 signals:
     void sendOrder(QVector<int> *order); //will be used by getNewOrder slot!
@@ -32,6 +32,8 @@ signals:
     void noTicketError();
     void noTicketToDeleteError();
     void logNotReceived();
+    void loggingdone();
+    void orderReportDone();
 
 
 

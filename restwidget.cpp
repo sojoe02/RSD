@@ -9,8 +9,8 @@
 #include <QDateTime>
 #include <QDebug>
 
-RestWidget::RestWidget(QWidget *parent) :
-    QWidget(parent)
+RestWidget::RestWidget(QWidget *parent,QListWidget *output) :
+    QWidget(parent), xmloutput(output)
 {
     //server_url = "http://httpbin.org/get";
     server_url = "http://192.168.0.100";
@@ -45,7 +45,7 @@ RestWidget::RestWidget(QWidget *parent) :
     QObject::connect(testLog,SIGNAL(pressed()),this,SLOT(testLog()));
 
     //DEFINE THE OUTPUT AREA:
-    xmloutput = new QListWidget();
+    //xmloutput = new QListWidget();
     xmloutput->addItem("ready");
     xmloutput->addItem("for");
     xmloutput->addItem("Action...");
@@ -180,6 +180,7 @@ void RestWidget::parseOrderInfo(QNetworkReply *reply){
 
                 QString yellows = doc.elementsByTagName("yellow").item(0).toElement().text();
                 currentOrder->append(yellows.toInt());
+                xmloutput->addItem(yellows);
             }
             else{
                 emit noTicketError();
@@ -248,6 +249,8 @@ void RestWidget::orderDone(){
         qDebug() << "posting order log to" << order_url;
         //then log the order:
     }
+
+    emit orderReportDone();
 
 }
 
@@ -332,6 +335,8 @@ void RestWidget::receiveLogReply(QNetworkReply *reply){
 
     }
     qDebug() << "logging done";
+
+    emit loggingdone();
 }
 
 void RestWidget::testLog(){

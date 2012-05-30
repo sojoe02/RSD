@@ -16,10 +16,8 @@ OEEWidget::OEEWidget(QWidget *parent) :
 
 
     OEEoutput = new QLabel(this);
-
-
     label = new QLabel(this);
-    layout = new QVBoxLayout(this);
+    QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(button);
     layout->addWidget(label);
     layout->addWidget(OEEoutput);

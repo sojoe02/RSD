@@ -7,6 +7,7 @@
 #include <iostream>
 #include "Globals.h"
 
+
 orderlogic::orderlogic(QWidget *parent) :
     QWidget(parent)
 {
@@ -66,6 +67,8 @@ void orderlogic::scanTable(){
 
     serial.sendPLCcmd(0,3);
     serial.sendPLCcmd(0,3);
+
+    emit scanningdone();
 
 
 }
@@ -197,14 +200,10 @@ void orderlogic::handleOrder(std::vector<int> orderarray){
             break;
         }
 
-//        qDebug() << "Moving to next frame " << FInterval*j;
-//        serial.sendPLCcmd(FInterval*j,3);
-//        sleep(1);
-//        serial.sendPLCcmd(FInterval*j,3);
-//        sleep(ScanDelay/1000);
-
     }
 
+    emit orderincomplete();
+    qDebug() << "Not enough bricks on the table, completing";
 
 }
 

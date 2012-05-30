@@ -7,17 +7,21 @@
 #include <QApplication>
 #include "restwidget.h"
 #include "oeewidget.h"
+#include "orderlogic.h"
 
 class PackMLw : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PackMLw(QWidget *parent = 0, RestWidget *rest=0, OEEWidget *oee = 0);
+    explicit PackMLw(QWidget *parent = 0,
+                     RestWidget *rest=0,
+                     OEEWidget *oee = 0,
+                     QListWidget *output=0);
     
 signals:
     void sc();
     void orderDone();
-
+    void neworder();
     
 public slots:
  void stateAborting();
@@ -43,6 +47,8 @@ public slots:
  void handlingOrder();
 
  void timedSC();
+
+ //void doneexcecute();
 
 private:
 
@@ -86,6 +92,7 @@ private:
     QPushButton *startButton;
     QPushButton *clearButton;
 
+    QListWidget *output;
 
     QLabel *label;
     QLabel *statusLabel;
@@ -93,6 +100,7 @@ private:
 
     RestWidget *restwidget;
     OEEWidget *oeewidget;
+    orderlogic *orderlog;
 
     int delay;
 };

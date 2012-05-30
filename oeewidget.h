@@ -22,9 +22,7 @@ public slots:
     void systemStopped();
     void systemStarted();
     void systemRunning();
-
     void orderStarted();
-
     void updateOEE();
 
 private:
@@ -33,7 +31,7 @@ private:
     QLabel *OEEoutput;
     double OEEnumber;
     double cycletime;
-    QVBoxLayout *layout;
+
 
     QTime downtimer;
     QTime cycletimer;

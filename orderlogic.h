@@ -18,6 +18,9 @@ public:
     
 signals:
     void orderdone();
+    void scanningdone();
+    void orderincomplete();
+
     
 public slots:
     void scanTable();
