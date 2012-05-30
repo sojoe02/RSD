@@ -1,55 +1,60 @@
 #include "frame.h"
 #include <QVector>
 #include <vision/VisionSystem.h>
+#include <vector>
+#include <Globals.h>
+#include <iostream>
 
 Frame::Frame(int position):
     position(position)
 {
 
-
-    nobrick.color=4;
+    nobrick.color = 3;
     nobrick.orientation= 0;
     nobrick.x = 0;
     nobrick.y = 0;
-
 }
 
-void Frame::addBlue(VisionSystem::Legobrick brick){
-    blues.push_back(brick);
+void Frame::addBlue(Legobrick brick){
+    Legobrick thisbrick = brick;
+    blues.push_back(thisbrick);
 }
 
-void Frame::addYellow(VisionSystem::Legobrick brick){
-    yellows.push_back(brick);
+void Frame::addYellow(Legobrick brick){
+    Legobrick thisbrick = brick;
+    yellows.push_back(thisbrick);
 }
 
-void Frame::addRed(VisionSystem::Legobrick brick){
-    reds.push_back(brick);
+void Frame::addRed(Legobrick brick){
+    Legobrick thisbrick = brick;
+    reds.push_back(thisbrick);
+    std::cerr << thisbrick.x << std::endl;
 }
 
-VisionSystem::Legobrick Frame::returnBlue(){
-    if(blues.empty()){
+Legobrick Frame::returnBlue(){
+    if(blues.size()==0){
         return nobrick;
     }
-    VisionSystem::Legobrick brick = blues.back();
+    Legobrick brick = blues.back();
     blues.pop_back();
     return brick;
-
 }
 
-VisionSystem::Legobrick Frame::returnRed(){
-    if(reds.empty()){
+Legobrick Frame::returnRed(){
+    if(reds.size() == 0){
         return nobrick;
     }
-    VisionSystem::Legobrick brick =  reds.back();
+    Legobrick brick =  reds.back();
+    std::cerr << "jeg vil vædde: " << brick.x << std::endl;
     reds.pop_back();
     return brick;
 }
 
-VisionSystem::Legobrick Frame::returnYellow(){
-    if(blues.empty()){
+Legobrick Frame::returnYellow(){
+    if(yellows.size()== 0){
         return nobrick;
     }
-    VisionSystem::Legobrick brick = yellows.back();
+    Legobrick brick = yellows.back();
     yellows.pop_back();
     return brick;
 }
@@ -57,3 +62,10 @@ VisionSystem::Legobrick Frame::returnYellow(){
 int Frame:: getPosition(){
     return position;
 }
+
+std::string Frame::toString(){
+    std::stringstream string;
+    string << "blue: " << blues.size() << ", red: " << reds.size() << ", yellow: " << yellows.size();
+    return string.str();
+}
+

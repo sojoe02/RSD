@@ -33,6 +33,8 @@ DebugWidget::DebugWidget(QWidget *parent) :
     layout->addWidget(runOrderSystemtest,0,3);
     layout->addWidget(feedback,1,0,4,4);
 
+
+
     setLayout(layout);
 }
 
@@ -77,10 +79,10 @@ void DebugWidget:: testVision()
 {
     feedback->addItem("Performing vision test");
     feedback->addItem("Printing found brick locations:");
-    VisionSystem vs;
+
 
     cv::namedWindow("output", CV_WINDOW_NORMAL);
-
+    VisionSystem vs;
     vs.findBricks();
 
 
@@ -109,8 +111,14 @@ void DebugWidget:: testVision()
 
 void DebugWidget:: testOrderSystem()
 {
+    std::vector<int> orderarray;
+    orderarray.push_back(3);
+    orderarray.push_back(5);
+    orderarray.push_back(2);
     //scan the table
     feedback->addItem("Scanning the table");
     orderlogic logic;
     logic.scanTable();
+    feedback->addItem("Picking up items");
+    logic.handleOrder(orderarray);
 }

@@ -32,7 +32,8 @@ HEADERS += \
     serial/serial_fct.h\
     serial/serial_fct2.h \
     orderlogic.h \
-    frame.h
+    frame.h \
+    Globals.h
 
 OTHER_FILES +=
 

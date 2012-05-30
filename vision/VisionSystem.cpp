@@ -13,6 +13,7 @@
 #include "VisionSystem.h"
 #include "time.h"
 #include "QDebug"
+#include "Globals.h"
 
 
      // A Simple Camera Capture Framework
@@ -75,6 +76,9 @@ bool VisionSystem::findBricks() {
 
          //Draw each brick in an image, and send it on.
          bricks.clear();
+
+         //std::cerr << newcontours.size() << std::endl;
+
          for (int p = 0; p < newcontours.size(); p++) {
 
              int smallestx = org.rows;
@@ -93,6 +97,8 @@ bool VisionSystem::findBricks() {
              cv::drawContours(dsts, newcontours, p, cv::Scalar(255,255,255), CV_FILLED, 8);
              segmented = segmented + dsts;
 
+
+
              cv::Mat dst = cv::Mat().zeros(org.rows, org.cols, CV_32FC1);
 
              //Do corner detection
@@ -100,6 +106,9 @@ bool VisionSystem::findBricks() {
              int c;
 
              int area = cv::contourArea(cv::Mat(newcontours[p]));
+
+             //std::cerr << "area: " << area << std::endl;
+
              if (area > 300 && area < 1000) {
                  c = 0;
              } else if (area > 1000 && area < 1600) {
@@ -108,10 +117,13 @@ bool VisionSystem::findBricks() {
                  c = 2;
              }
 
+             //std::cerr << "c: " << c << std::endl;
+             //std::cerr << "smallestx: " << smallestx << " smallesty: " << smallesty << std::endl;
+
 
              if (smallestx+100 >= org.cols || smallesty+100 >= org.rows || smallestx-10 <= 0 || smallesty-10 <= 0) {
                  //error
-                 break;
+                 continue;
              }
              cv::Mat smaller = dsts.rowRange(cv::Range(smallesty-10, smallesty+100));
              smaller = smaller.colRange(cv::Range(smallestx-10, smallestx+100));
@@ -148,7 +160,7 @@ bool VisionSystem::findBricks() {
              double x = 0, y = 0;
 
              int kl = corners.size();
-             //std::cout << kl << std::endl;
+             //std::cerr << kl << std::endl;
              int mindistidx = 1;
 
              for (int i = 0; i < corners.size(); i++) {
@@ -172,7 +184,7 @@ bool VisionSystem::findBricks() {
 
              double angle = atan(a) * 180/M_PI;
 
-             bricks.push_back({abs(angle), (segmented.cols-x)/pixelsPerCmX, (segmented.rows-y)/pixelsPerCmY, c});
+             bricks.push_back({abs(angle), (segmented.rows-y)/pixelsPerCmY, (segmented.cols-x)/pixelsPerCmX, c});
 
              corners.clear();
          }

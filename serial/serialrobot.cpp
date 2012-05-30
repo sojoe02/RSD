@@ -25,7 +25,7 @@ void SerialRobot::sendRobotCoor(string message){
     // open and send initial position to the robot
     Serial_Open_Port(comPort);
 
-    Serial_Send_Message(message2);
+    Serial_Send_Message(message);
 
     Serial_Close_Port();
 }

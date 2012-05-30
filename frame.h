@@ -4,31 +4,37 @@
 #include <vision/VisionSystem.h>
 
 #include <QVector>
+#include <string>
+#include <vector>
+#include <Globals.h>
 
 class Frame
 {
-public:
-    Frame(int postion);
+public:    
 
-    void addBlue(VisionSystem::Legobrick brick);
-    void addRed(VisionSystem::Legobrick brick);
-    void addYellow(VisionSystem::Legobrick brick);
+    Frame(int position);
 
-    VisionSystem::Legobrick returnBlue();
-    VisionSystem::Legobrick returnRed();
-    VisionSystem::Legobrick returnYellow();
+    void addBlue(Legobrick);
+    void addRed(Legobrick);
+    void addYellow(Legobrick);
+
+    Legobrick returnBlue();
+    Legobrick returnRed();
+    Legobrick returnYellow();
 
     int getPosition();
 
+    std::string toString();
+
 private:
 
-    std::vector<VisionSystem::Legobrick> blues;
-    std::vector<VisionSystem::Legobrick> reds;
-    std::vector<VisionSystem::Legobrick> yellows;
+    std::vector<Legobrick> blues;
+    std::vector<Legobrick> reds;
+    std::vector<Legobrick> yellows;
 
     int position;
 
-    struct VisionSystem::Legobrick nobrick;
+    Legobrick nobrick;
 };
 
 #endif // FRAME_H
